@@ -1,24 +1,21 @@
-version: '2'
+version: '3'
 services:
-  yunohost:
-    image: 'domainelibre/yunohost3'
-    privileged: true
-    restart: always
-    container_name: yunohost
-    hostname: yunohost.DOMAIN
-    ports:
-      - '2022:22'
-      - '25:25'
-      - '80:80'
-      - '443:443'
-      - '465:465'
-      - '587:587'
-      - '993:993'
-      - '5222:5222'
-      - '5269:5269'
-    command: ["/bin/systemd"]
-    volumes:
-      - '/srv/yuno/backup:/home/yunohost.backup/archives'
-      - '/media:/media'
-      - '/sys/fs/cgroup:/sys/fs/cgroup:ro'
-      - '/var/run/docker.sock:/var/run/docker.sock'
+   yunohost:
+     image: yunohost:local-2019-12-01
+     restart: unless-stopped
+     hostname: yuno.vaneckonline.net
+     privileged: true
+     ports:
+       - '53:53/udp'
+       - '80:80'
+       - '443:443'
+     volumes:
+       - 'yuno-data-vol:/home'
+       - /etc/localtime:/etc/localtime:ro
+       - /sys/fs/cgroup:/sys/fs/cgroup:ro
+     networks:
+       - yunonet
+volumes:
+  yuno-data-vol:
+networks:
+  yunonet:
